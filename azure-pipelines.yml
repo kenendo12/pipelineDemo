@@ -5,16 +5,38 @@
 
 #What branch we are watching
 trigger:
-- master
-#type of vm we're going to create
-pool:
-  vmImage: 'ubuntu-latest'
-#sequential steps to follow to build, run, test, deploy, etc... your app
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+  - 'master'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+pool: 'ubuntu-latest'
+
+variables:
+- name: 'instructor'
+  value: 'Mark'
+
+#watch for PR's
+pr: 'none'
+
+#groups sequential actions
+stages:
+  - stage:
+    jobs:
+      - job: 'build'
+        steps:
+          - script: 'dotnet build'
+          - script: echo Hey there $(instructor)!
+
+  - stage:
+    jobs:
+      - job: 'test'
+        dependsOn: 'build'
+        steps:
+          - script: 'dotnet test'
+
+  - stage:
+    jobs:
+      - job: 'publish'
+        dependsOn: 'test'
+        steps:
+          - script: 'dotnet publish'
+
+name: '$(date:yyyyMMdd)$(rev:rr)'
