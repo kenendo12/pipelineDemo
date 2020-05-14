@@ -23,8 +23,8 @@ stages:
     jobs:
       - job: 'build'
         steps:
-          - script: 'dotnet build'
-          - script: echo Hey there $(instructor)!
+          - script: dotnet build "\pipelineMvcDemo\pipelineMvcDemo"
+          - script: echo "Hey there $(instructor)!"
       - job: 'test'
         dependsOn: 'build'
         steps:
