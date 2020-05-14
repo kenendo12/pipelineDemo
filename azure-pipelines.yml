@@ -28,10 +28,10 @@ stages:
       - job: 'test'
         dependsOn: 'build'
         steps:
-          - script: 'dotnet test'
+          - script: dotnet test "pipelineMvcDemo\pipelineMvcDemo.sln"
       - job: 'publish'
         dependsOn: 'test'
         steps:
-          - script: 'dotnet publish'
+          - script: dotnet publish "pipelineMvcDemo\pipelineMvcDemo.sln"
 
 name: '$(date:yyyyMMdd)$(rev:rr)'
